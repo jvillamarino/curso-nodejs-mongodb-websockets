@@ -4,5 +4,5 @@ exports.sucess = (req, res, data, message = null, statusCode = 200) => {
 
 
 exports.error = (req, res, message, statusCode = 500) => {
-    res.status(500).send({ errorCode: statusCode, message, data: null })
+    res.status(statusCode).send({ errorCode: statusCode, message, data: null })
 }
