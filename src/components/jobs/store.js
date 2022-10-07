@@ -1,17 +1,9 @@
-const mongoose = require('mongoose');
 const Model = require('./model');
 
-mongoose.Promise = global.Promise;
+function getAll(filterByTitle) {
+    const filter = filterByTitle ? { title: { "$regex": filterByTitle, "$options": "i" } } : null
 
-const MONGODB_CONNECTION = 'mongodb+srv://adminCluster:MxRAhlWFBas16A6h@jobs-cluster.2hxofxd.mongodb.net/recruitment?retryWrites=true&w=majority';
-
-mongoose.connect(MONGODB_CONNECTION, (err) => {
-    console.log(`[MongoDB]: Client has been connect`);
-});
-
-
-function getAll() {
-    return Model.find();
+    return Model.find(filter);
 }
 
 async function getOne(id) {

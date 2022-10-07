@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const middlewares = require('./middlewares');
 const routingApp = require('./network/routes');
+const connectMongoDB = require('./db');
 
 const PORT = 3000;
 const app = express();
@@ -14,7 +15,9 @@ const getHeaders = (req, res, next) => {
 }
 app.use(express.static('public'));
 app.use([bodyParser.json()]);
+connectMongoDB();
 routingApp(app);
+
 
 
 app.listen(PORT, () => {

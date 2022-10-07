@@ -3,7 +3,10 @@ const response = require('../../network/response');
 const controller = require('./controller');
 
 router.get('/', (req, res, next) => {
-    controller.getAll()
+
+    const { filterByTitle } = req.query;
+
+    controller.getAll(filterByTitle)
         .then((jobs) => {
             response.sucess(req, res, jobs);
         })

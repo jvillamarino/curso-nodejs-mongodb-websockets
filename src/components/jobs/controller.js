@@ -1,9 +1,9 @@
 
 const store = require('./store');
 
-function getAll() {
+function getAll(filterByTitle) {
     return new Promise((resolve, reject) => {
-        resolve(store.getAll());
+        resolve(store.getAll(filterByTitle));
     });
 }
 
