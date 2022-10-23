@@ -3,7 +3,22 @@ const Model = require('./model');
 function getAll(filterByTitle) {
     const filter = filterByTitle ? { title: { "$regex": filterByTitle, "$options": "i" } } : null
 
-    return Model.find(filter);
+    return new Promise((resolve, reject) => {
+
+        Model.find(filter)
+            .populate('userOwner', 'name surname')
+            .exec((err, result) => {
+                if (err) return reject(err);
+                resolve(result);
+            });
+    })
+
+}
+
+
+function getCount(filterByTitle) {
+    return Model.count();
+
 }
 
 async function getOne(id) {

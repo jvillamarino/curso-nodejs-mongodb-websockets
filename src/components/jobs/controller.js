@@ -2,8 +2,14 @@
 const store = require('./store');
 
 function getAll(filterByTitle) {
-    return new Promise((resolve, reject) => {
-        resolve(store.getAll(filterByTitle));
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await store.getAll(filterByTitle);
+            resolve(response);
+        } catch (err) {
+            console.error(`[JobsController]: ${err.message}`);
+            reject({ 'message': 'No se encontraron datos', statusCode: 404 });
+        }
     });
 }
 
@@ -20,13 +26,13 @@ function getById(id) {
     });
 }
 
-function createJob({ title, experience, description }) {
+function createJob({ title, experience, description, userOwner }) {
     return new Promise(async (resolve, reject) => {
-        if (title && experience && description) {
-            const response = await store.add({ title, experience, description });
+        try {
+            const response = await store.add({ title, experience, description, userOwner });
             resolve(response);
-        } else {
-            console.error(`[JobsController]: Los datos recibidos fueron title: ${title}, experience: ${experience}, description: ${description}`)
+        } catch (err) {
+            console.error(`[JobsController]: ${err.message}`)
             reject({ 'message': 'Información incompleta', statusCode: 400 });
         }
 

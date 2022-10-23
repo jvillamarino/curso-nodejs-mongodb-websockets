@@ -12,6 +12,11 @@ const Schema = new mongoose.Schema({
         type: String,
         required: true
     },
+    userOwner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    }
 
 });
 

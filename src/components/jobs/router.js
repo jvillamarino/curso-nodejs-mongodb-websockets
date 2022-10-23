@@ -9,7 +9,7 @@ router.get('/', (req, res, next) => {
     controller.getAll(filterByTitle)
         .then((jobs) => {
             response.sucess(req, res, jobs);
-        })
+        }).catch((err) => response.error(req, res, err?.message, err?.statusCode))
 });
 
 router.get('/:id', (req, res) => {
