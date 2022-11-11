@@ -2,8 +2,9 @@
 const Model = require('./model');
 
 
-function getAll() {
-    return Model.find();
+function getAll(filterByName) {
+    const filter = filterByName ? { name: { '$regex': filterByName, '$options': 'i' } } : null;
+    return Model.find(filter);
 }
 
 function getOne(id) {

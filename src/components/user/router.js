@@ -1,10 +1,16 @@
-const router = require('express').Router();
+const express = require('express');
+const multer = require('multer');
+const router = express.Router();
+
 const controller = require('./controller');
 const response = require('../../network/response');
 
+const upload = multer({ dest: 'public/files/' });
+
 
 router.get('/', (req, res) => {
-    controller.getAll()
+    const { name } = req.query;
+    controller.getAll(name)
         .then(users => response.sucess(req, res, users))
 })
 
@@ -15,8 +21,8 @@ router.get('/:id', (req, res) => {
         .catch(err => response.error(req, res, err.message, err.statusCode));
 })
 
-router.post('/', (req, res) => {
-    const data = req.body;
+router.post('/', upload.single('file'), (req, res) => {
+    const data = { ...req.body, file: req.file };
     controller.createUser(data)
         .then(() => response.sucess(req, res, null, 'Registro creado con éxito', 201))
         .catch(err => response.error(req, res, err.message, err.statusCode));

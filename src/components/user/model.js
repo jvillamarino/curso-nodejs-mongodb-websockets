@@ -22,7 +22,8 @@ const USER_SCHEMA = new mongoose.Schema({
     experience: {
         type: String,
         required: true
-    }
+    },
+    file: mongoose.Schema.Types.Map
 });
 
 

@@ -10,11 +10,11 @@ const app = express();
 // Add Router & bodyParser Middleware
 
 const getHeaders = (req, res, next) => {
-    console.log(req.headers);
+    console.log(req.auth);
     next();
 }
-app.use(express.static('public'));
-app.use([bodyParser.json()]);
+app.use('/public', express.static('public'));
+app.use([bodyParser.json(), getHeaders]);
 connectMongoDB();
 routingApp(app);
 

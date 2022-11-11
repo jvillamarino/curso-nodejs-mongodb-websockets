@@ -1,8 +1,8 @@
 const store = require('./store');
 
-function getAll() {
+function getAll(filterByName) {
     return new Promise((resolve, reject) => {
-        resolve(store.getAll());
+        resolve(store.getAll(filterByName));
     });
 }
 
@@ -21,12 +21,19 @@ function getById(id) {
     })
 }
 
-function createUser(data) {
+function createUser({ file, ...rest }) {
     return new Promise(async (resolve, reject) => {
         try {
-            const response = await store.add(data);
-            resolve(response);
+            let fileData = undefined;
+            if (file) {
+                const { path, ...fileRest } = file;
+                const filename = `http://localhost:3000/${path}`
+                fileData = { ...fileRest, filename };
+            }
+
+            resolve(store.add({ ...rest, file: fileData }));
         } catch (err) {
+            console.log(err);
             const requiredFields = Object.keys(err.errors).join(', ');
             console.error(`[User - Controller]: Error al guardar los datos. \n MESSAGE: ${err.message}`)
             reject({ 'message': `Faltan datos requeridos: ${requiredFields}`, statusCode: 400 });
